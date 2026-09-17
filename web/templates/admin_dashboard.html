@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#09090b]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deliverace Admin Console • Platform Governance</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            brand: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+            surface: { 800: '#18181b', 900: '#121215', 950: '#09090b' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="min-h-full text-zinc-100 bg-[#09090b] selection:bg-amber-500 selection:text-black">
+  <!-- Header -->
+  <header class="border-b border-white/5 bg-surface-900/80 backdrop-blur sticky top-0 z-40 px-6 py-4">
+    <div class="max-w-7xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-xl shadow-lg">
+          🛡️
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base font-black text-white">Deliverace Administration Console</h1>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-widest text-amber-400 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800">
+              ROOT ACCESS
+            </span>
+          </div>
+          <p class="text-xs text-zinc-400">Platform Governance, Subscription Controls & User Directory</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button onclick="loadAdminUsers()" class="px-3.5 py-2 rounded-xl bg-surface-800 hover:bg-surface-700 text-zinc-300 font-bold text-xs flex items-center gap-1.5 transition border border-white/5 cursor-pointer">
+          <span>🔄 Refresh Data</span>
+        </button>
+        <button onclick="adminLogout()" class="px-3.5 py-2 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 font-bold text-xs flex items-center gap-1.5 transition border border-rose-500/20 cursor-pointer">
+          <span>🚪 Sign Out</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="max-w-7xl mx-auto p-6 space-y-8">
+    <!-- Notification Alert -->
+    <div id="adminAlert" class="hidden p-4 rounded-2xl text-xs font-semibold border transition"></div>
+
+    <!-- Platform Subscription Mode Switch -->
+    <div class="p-6 rounded-3xl border border-amber-500/30 bg-gradient-to-r from-amber-950/20 via-surface-900 to-surface-900 space-y-4 shadow-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span>Platform Subscription Mode</span>
+            <span id="currentModeLabel" class="text-xs px-2 py-0.5 rounded-full font-mono font-semibold bg-surface-800 text-amber-300">
+              Active Mode: {{ subscription_mode|capitalize }}
+            </span>
+          </h2>
+          <p class="text-xs text-zinc-400 mt-1">Toggle whether Deliverace operates in Open Free Access mode or requires an active subscription tier.</p>
+        </div>
+        <div class="flex items-center gap-2 bg-surface-950 p-1.5 rounded-2xl border border-white/10">
+          <button id="adminBtnModeFree" onclick="toggleAdminSubMode('free')" class="px-4 py-2 rounded-xl text-xs font-bold transition {% if subscription_mode == 'free' %}bg-amber-500 text-black shadow-lg shadow-amber-950{% else %}text-zinc-400 hover:text-white{% endif %}">
+            Free Mode (Open Access)
+          </button>
+          <button id="adminBtnModePaid" onclick="toggleAdminSubMode('paid')" class="px-4 py-2 rounded-xl text-xs font-bold transition {% if subscription_mode != 'free' %}bg-amber-500 text-black shadow-lg shadow-amber-950{% else %}text-zinc-400 hover:text-white{% endif %}">
+            Subscription Required
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Registered Users Table -->
+    <div class="p-6 rounded-3xl bg-surface-900 border border-white/10 space-y-4 shadow-xl">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-white/5">
+        <div>
+          <h2 class="text-base font-bold text-white">Registered Platform Users</h2>
+          <p class="text-xs text-zinc-400 mt-0.5">Manage user accounts, assign subscription tiers (Free / Pro / Enterprise), and govern admin privileges.</p>
+        </div>
+        <span id="adminUserCountBadge" class="text-xs font-mono font-bold text-zinc-400 bg-surface-800 px-3 py-1.5 rounded-xl border border-white/5">
+          Loading users...
+        </span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="bg-surface-950 text-zinc-400 border-b border-white/5 font-mono uppercase text-[10px]">
+            <tr>
+              <th class="p-4">User</th>
+              <th class="p-4">Role</th>
+              <th class="p-4">Subscription Tier</th>
+              <th class="p-4">Status</th>
+              <th class="p-4">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="adminUsersTableBody" class="divide-y divide-white/5 text-zinc-300">
+            <tr>
+              <td colspan="5" class="p-8 text-center text-zinc-500 font-mono text-xs">
+                Fetching registered accounts...
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    function showAlert(msg, isSuccess = true) {
+      const el = document.getElementById('adminAlert');
+      el.className = isSuccess 
+        ? 'p-4 rounded-2xl text-xs font-semibold bg-emerald-500/10 border border-emerald-500/30 text-emerald-300'
+        : 'p-4 rounded-2xl text-xs font-semibold bg-rose-500/10 border border-rose-500/30 text-rose-300';
+      el.textContent = msg;
+      el.classList.remove('hidden');
+      setTimeout(() => { el.classList.add('hidden'); }, 5000);
+    }
+
+    async function toggleAdminSubMode(mode) {
+      try {
+        const res = await fetch('/api/admin/toggle_subscription_mode', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mode: mode })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showAlert(data.message || 'Subscription mode updated!');
+          document.getElementById('currentModeLabel').textContent = 'Active Mode: ' + (mode === 'free' ? 'Free' : 'Subscription Required');
+          const btnFree = document.getElementById('adminBtnModeFree');
+          const btnPaid = document.getElementById('adminBtnModePaid');
+          if (mode === 'free') {
+            btnFree.className = 'px-4 py-2 rounded-xl text-xs font-bold transition bg-amber-500 text-black shadow-lg shadow-amber-950';
+            btnPaid.className = 'px-4 py-2 rounded-xl text-xs font-bold transition text-zinc-400 hover:text-white';
+          } else {
+            btnPaid.className = 'px-4 py-2 rounded-xl text-xs font-bold transition bg-amber-500 text-black shadow-lg shadow-amber-950';
+            btnFree.className = 'px-4 py-2 rounded-xl text-xs font-bold transition text-zinc-400 hover:text-white';
+          }
+        } else {
+          showAlert(data.message || 'Error updating subscription mode', false);
+        }
+      } catch (err) {
+        showAlert('Network error: ' + err.message, false);
+      }
+    }
+
+    async function loadAdminUsers() {
+      const tbody = document.getElementById('adminUsersTableBody');
+      const badge = document.getElementById('adminUserCountBadge');
+      badge.textContent = 'Loading...';
+
+      try {
+        const res = await fetch('/api/admin/users');
+        const data = await res.json();
+
+        if (res.ok && data.status === 'success') {
+          const users = data.users || [];
+          badge.textContent = `${users.length} Registered User(s)`;
+
+          if (users.length === 0) {
+            tbody.innerHTML = `
+              <tr>
+                <td colspan="5" class="p-8 text-center text-zinc-500 font-mono text-xs">
+                  No registered users found in database.
+                </td>
+              </tr>
+            `;
+            return;
+          }
+
+          tbody.innerHTML = users.map(u => `
+            <tr class="hover:bg-white/[0.02] transition">
+              <td class="p-4">
+                <div class="font-bold text-white text-xs">${u.username || 'User'}</div>
+                <div class="text-[11px] text-zinc-500 font-mono">${u.email || 'No email'}</div>
+                <div class="text-[10px] text-zinc-600 font-mono">ID: ${u.id || ''}</div>
+              </td>
+              <td class="p-4">
+                ${u.is_admin ? 
+                  '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">Administrator</span>' : 
+                  '<span class="px-2 py-0.5 rounded text-[10px] font-mono text-zinc-400 bg-surface-800 border border-white/5">Member</span>'}
+              </td>
+              <td class="p-4">
+                <select onchange="updateUserTier('${u.id}', this.value)" class="bg-surface-950 border border-white/10 rounded-lg px-2.5 py-1 text-xs text-zinc-200 outline-none focus:border-amber-500">
+                  <option value="free" ${u.subscription_tier === 'free' ? 'selected' : ''}>Free</option>
+                  <option value="pro" ${u.subscription_tier === 'pro' ? 'selected' : ''}>Pro</option>
+                  <option value="enterprise" ${u.subscription_tier === 'enterprise' ? 'selected' : ''}>Enterprise</option>
+                </select>
+              </td>
+              <td class="p-4">
+                <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold ${u.subscription_status === 'active' ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-zinc-800 text-zinc-400'}">
+                  ${u.subscription_status || 'active'}
+                </span>
+              </td>
+              <td class="p-4">
+                <button onclick="toggleUserRole('${u.id}', ${!u.is_admin})" class="px-3 py-1 rounded-lg text-xs font-bold transition border ${u.is_admin ? 'border-zinc-700 bg-surface-800 text-zinc-400 hover:text-white' : 'border-amber-500/40 bg-amber-500/10 text-amber-300 hover:bg-amber-500/20'}">
+                  ${u.is_admin ? 'Demote to Member' : 'Promote to Admin'}
+                </button>
+              </td>
+            </tr>
+          `).join('');
+        } else {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="p-8 text-center text-rose-400 font-mono text-xs">
+                ${data.message || 'Error fetching user directory'}
+              </td>
+            </tr>
+          `;
+          badge.textContent = 'Error';
+        }
+      } catch (err) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="p-8 text-center text-rose-400 font-mono text-xs">
+              Network error connecting to API: ${err.message}
+            </td>
+          </tr>
+        `;
+        badge.textContent = 'Offline';
+      }
+    }
+
+    async function updateUserTier(userId, newTier) {
+      try {
+        const res = await fetch('/api/admin/update_user_tier', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, tier: newTier })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showAlert(data.message || `User updated to ${newTier.toUpperCase()}`);
+        } else {
+          showAlert(data.message || 'Failed to update tier', false);
+        }
+      } catch (err) {
+        showAlert('Network error: ' + err.message, false);
+      }
+    }
+
+    async function toggleUserRole(userId, makeAdmin) {
+      try {
+        const res = await fetch('/api/admin/toggle_role', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ user_id: userId, is_admin: makeAdmin })
+        });
+        const data = await res.json();
+        if (res.ok) {
+          showAlert(data.message || 'User role updated');
+          loadAdminUsers();
+        } else {
+          showAlert(data.message || 'Failed to update role', false);
+        }
+      } catch (err) {
+        showAlert('Network error: ' + err.message, false);
+      }
+    }
+
+    async function adminLogout() {
+      try {
+        await fetch('/api/admin/logout', { method: 'POST' });
+      } catch (e) {}
+      window.location.href = '/admin/login';
+    }
+
+    // Auto-load users on page open
+    window.addEventListener('DOMContentLoaded', loadAdminUsers);
+  </script>
+</body>
+</html>

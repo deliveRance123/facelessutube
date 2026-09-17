@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#09090b]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kinetic Captions & Subtitles • Deliverace Studio</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: { 500: '#f43f5e', 600: '#e11d48', 700: '#be123c', 800: '#9f1239', 950: '#4c0519' },
+            surface: { 950: '#09090b', 900: '#0f0f14', 850: '#14141c', 800: '#1a1a24' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/app.css?v=12">
+</head>
+<body class="bg-[#09090b] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-rose-600 selection:text-white">
+
+  <!-- Ambient Glow -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-brand-600/15 to-transparent blur-[140px]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:28px_28px]"></div>
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-50 w-full border-b border-white/5 bg-[#09090b]/80 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3.5 group">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-500/20 to-brand-950/80 border border-brand-500/40 p-1.5 flex items-center justify-center shadow-lg shadow-brand-900/30 group-hover:border-brand-400 transition">
+          <img src="/static/deliverace_logo.png?v=5" alt="Deliverace" class="w-full h-full object-contain drop-shadow">
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xl font-black tracking-tight text-white font-sans">DELIVER<span class="text-brand-500">ACE</span></span>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-brand-950/80 border border-brand-800/80 text-brand-300">STUDIO</span>
+          </div>
+          <span class="text-[10px] text-zinc-400 font-semibold tracking-wider block -mt-0.5">AI Story &amp; Video Platform</span>
+        </div>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-zinc-300">
+        <a href="/modes" class="hover:text-white transition">Creation Modes</a>
+        <a href="/how-it-works" class="hover:text-white transition">How It Works</a>
+        <a href="/captions" class="text-brand-400 font-bold">Caption Styles</a>
+        <a href="/voices" class="hover:text-white transition">Narration</a>
+        <a href="/faq" class="hover:text-white transition">FAQ</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        {% if is_authenticated %}
+          <a href="/dashboard" class="btn-brand-glow px-5 py-2.5 rounded-xl text-white text-xs font-bold flex items-center gap-2">
+            <span>Studio Dashboard &rarr;</span>
+          </a>
+        {% else %}
+          <a href="/login" class="px-4 py-2.5 rounded-xl text-zinc-300 hover:text-white text-xs font-bold transition">Sign In</a>
+          <a href="/signup" class="btn-brand-glow px-5 py-2.5 rounded-xl text-white text-xs font-bold">Sign Up Free</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 max-w-7xl mx-auto px-6 py-16 relative z-10 space-y-16">
+    <div class="text-center max-w-3xl mx-auto space-y-4">
+      <span class="text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-brand-950 border border-brand-800 text-brand-300">
+        Visual Retention Architecture
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-black text-white tracking-tight">Kinetic Caption Styles</h1>
+      <p class="text-base text-zinc-400 leading-relaxed">
+        Captions aren't just subtitles—they drive over 80% of viewer watch time on muted feeds. Every word is timed with millisecond precision and styled with high-contrast outlines for maximum readability.
+      </p>
+    </div>
+
+    <!-- Styles Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      
+      <!-- Style 1: Gold Foil -->
+      <div class="glass-card p-6 border-amber-500/30 space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono font-bold text-amber-400 uppercase tracking-wider">Gold Foil Luxury</span>
+          <span class="text-[10px] bg-amber-950 px-2 py-0.5 rounded text-amber-300 border border-amber-800 font-bold">High CTR</span>
+        </div>
+        <div class="h-32 bg-black rounded-xl border border-white/10 flex items-center justify-center p-4 text-center">
+          <p class="text-sm font-black text-amber-300 tracking-wide drop-shadow-[0_2px_10px_rgba(251,191,36,0.5)]">
+            "THE GREATEST MASTERY IS OVER YOURSELF"
+          </p>
+        </div>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          Deep metallic gold with rich amber drop-shadows. Recommended for stoic philosophy, dark psychology, and wealth mindset channels.
+        </p>
+      </div>
+
+      <!-- Style 2: Neon Cyan -->
+      <div class="glass-card p-6 border-cyan-500/30 space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider">Neon Cyberpunk</span>
+          <span class="text-[10px] bg-cyan-950 px-2 py-0.5 rounded text-cyan-300 border border-cyan-800 font-bold">Sci-Fi</span>
+        </div>
+        <div class="h-32 bg-black rounded-xl border border-white/10 flex items-center justify-center p-4 text-center">
+          <p class="text-sm font-black text-cyan-300 tracking-wide drop-shadow-[0_2px_12px_rgba(34,211,238,0.7)] font-mono">
+            &gt; SYSTEM ACTIVATED: RUN MATRIX_
+          </p>
+        </div>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          Pulsing cyan glow on pitch-black backdrops. Perfect for futuristic sci-fi lore, artificial intelligence, and coding chronicles.
+        </p>
+      </div>
+
+      <!-- Style 3: TikTok Viral Bold -->
+      <div class="glass-card p-6 border-brand-500/30 space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono font-bold text-brand-400 uppercase tracking-wider">TikTok Viral Bold</span>
+          <span class="text-[10px] bg-brand-950 px-2 py-0.5 rounded text-brand-300 border border-brand-800 font-bold">Max Retention</span>
+        </div>
+        <div class="h-32 bg-black rounded-xl border border-white/10 flex items-center justify-center p-4 text-center">
+          <div class="inline-block bg-white text-black font-black px-3 py-1 rounded text-sm tracking-tighter uppercase shadow-lg">
+            STOP WASTING TIME.
+          </div>
+        </div>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          High-contrast chunky typography with clean background pill frames. Proven across millions of viral TikTok and Reels videos.
+        </p>
+      </div>
+
+      <!-- Style 4: Karaoke Word-Highlight -->
+      <div class="glass-card p-6 border-emerald-500/30 space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider">Karaoke Glow</span>
+          <span class="text-[10px] bg-emerald-950 px-2 py-0.5 rounded text-emerald-300 border border-emerald-800 font-bold">Dynamic Sync</span>
+        </div>
+        <div class="h-32 bg-black rounded-xl border border-white/10 flex items-center justify-center p-4 text-center">
+          <p class="text-sm font-black text-zinc-400">
+            EVERY <span class="text-emerald-400 underline decoration-2 decoration-emerald-400">SECOND</span> MATTERS
+          </p>
+        </div>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          Spoken words illuminate sequentially as the narrator delivers each syllable. Keeps the viewer's gaze locked to the center of the frame.
+        </p>
+      </div>
+
+      <!-- Style 5: Cinema Film Still -->
+      <div class="glass-card p-6 border-zinc-500/30 space-y-4">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-mono font-bold text-zinc-300 uppercase tracking-wider">Cinema Documentary</span>
+          <span class="text-[10px] bg-surface-800 px-2 py-0.5 rounded text-zinc-400 border border-white/10 font-bold">16:9 Movie</span>
+        </div>
+        <div class="h-32 bg-black rounded-xl border border-white/10 flex items-center justify-center p-4 text-center">
+          <p class="text-xs font-semibold text-zinc-200 tracking-widest uppercase">
+            [ Narrator: In the winter of 1942... ]
+          </p>
+        </div>
+        <p class="text-xs text-zinc-400 leading-relaxed">
+          Elegant, letterboxed subtitle styling tailored for widescreen documentaries, historical accounts, and feature-length narratives.
+        </p>
+      </div>
+
+      <!-- Studio CTA -->
+      <div class="glass-card p-6 border-brand-500/40 bg-gradient-to-br from-brand-950/30 to-surface-900 flex flex-col justify-between space-y-4">
+        <div class="space-y-2">
+          <span class="text-xs font-mono font-bold text-brand-300 uppercase tracking-wider">Ready to apply?</span>
+          <h3 class="text-lg font-bold text-white">Pick Your Style in Studio</h3>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Switch between styles with a single click. The render engine automatically burns them into your final MP4.
+          </p>
+        </div>
+        <a href="/dashboard" class="btn-brand-glow w-full py-2.5 rounded-xl text-center text-xs font-bold text-white block">
+          Open Studio &rarr;
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 bg-[#070709] py-10 px-6 text-xs text-zinc-400 mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <img src="/static/deliverace_logo.png?v=5" alt="Deliverace" class="w-6 h-6 object-contain">
+        <span class="font-bold text-white">DELIVER<span class="text-brand-500">ACE</span> STUDIO</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="/modes" class="hover:text-white transition">Creation Modes</a>
+        <a href="/how-it-works" class="hover:text-white transition">Workflow</a>
+        <a href="/captions" class="hover:text-white transition">Captions</a>
+        <a href="/voices" class="hover:text-white transition">Voices</a>
+        <a href="/faq" class="hover:text-white transition">FAQ</a>
+      </div>
+      <div class="text-zinc-500">&copy; 2026 Deliverace Studio. All rights reserved.</div>
+    </div>
+  </footer>
+
+</body>
+</html>

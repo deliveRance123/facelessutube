@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#09090b]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How It Works • Deliverace Studio</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: { 500: '#f43f5e', 600: '#e11d48', 700: '#be123c', 800: '#9f1239', 950: '#4c0519' },
+            surface: { 950: '#09090b', 900: '#0f0f14', 850: '#14141c', 800: '#1a1a24' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/app.css?v=12">
+</head>
+<body class="bg-[#09090b] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-rose-600 selection:text-white">
+
+  <!-- Ambient Flare -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-brand-600/15 to-transparent blur-[140px]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:28px_28px]"></div>
+  </div>
+
+  <!-- Header -->
+  <header class="sticky top-0 z-50 w-full border-b border-white/5 bg-[#09090b]/80 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3.5 group">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-500/20 to-brand-950/80 border border-brand-500/40 p-1.5 flex items-center justify-center shadow-lg shadow-brand-900/30 group-hover:border-brand-400 transition">
+          <img src="/static/deliverace_logo.png?v=5" alt="Deliverace" class="w-full h-full object-contain drop-shadow">
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xl font-black tracking-tight text-white font-sans">DELIVER<span class="text-brand-500">ACE</span></span>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-brand-950/80 border border-brand-800/80 text-brand-300">STUDIO</span>
+          </div>
+          <span class="text-[10px] text-zinc-400 font-semibold tracking-wider block -mt-0.5">AI Story &amp; Video Platform</span>
+        </div>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-zinc-300">
+        <a href="/modes" class="hover:text-white transition">Creation Modes</a>
+        <a href="/how-it-works" class="text-brand-400 font-bold">How It Works</a>
+        <a href="/captions" class="hover:text-white transition">Caption Styles</a>
+        <a href="/voices" class="hover:text-white transition">Narration</a>
+        <a href="/faq" class="hover:text-white transition">FAQ</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        {% if is_authenticated %}
+          <a href="/dashboard" class="btn-brand-glow px-5 py-2.5 rounded-xl text-white text-xs font-bold flex items-center gap-2">
+            <span>Studio Dashboard &rarr;</span>
+          </a>
+        {% else %}
+          <a href="/login" class="px-4 py-2.5 rounded-xl text-zinc-300 hover:text-white text-xs font-bold transition">Sign In</a>
+          <a href="/signup" class="btn-brand-glow px-5 py-2.5 rounded-xl text-white text-xs font-bold">Sign Up Free</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="flex-1 max-w-5xl mx-auto px-6 py-16 relative z-10 space-y-16">
+    <div class="text-center max-w-3xl mx-auto space-y-4">
+      <span class="text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-brand-950 border border-brand-800 text-brand-300">
+        End-to-End Workflow
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-black text-white tracking-tight">How Deliverace Works</h1>
+      <p class="text-base text-zinc-400 leading-relaxed">
+        From raw script to a polished, high-definition video in under 60 seconds. No timeline scrubbing, keyframing, or manual subtitle syncing needed.
+      </p>
+    </div>
+
+    <!-- Step-by-Step Flow -->
+    <div class="space-y-6">
+      
+      <!-- Step 1 -->
+      <div class="glass-card p-8 border border-white/10 flex flex-col md:flex-row items-start md:items-center gap-6">
+        <div class="w-14 h-14 rounded-2xl bg-brand-950 border border-brand-800 text-brand-400 font-black text-2xl flex items-center justify-center shrink-0">
+          01
+        </div>
+        <div class="space-y-1.5 flex-1">
+          <h2 class="text-lg font-bold text-white">Import Your Visuals or Clips</h2>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Drag-and-drop animated clips from Meta AI (MP4, WebM, GIF) or static illustration scenes. Deliverace automatically detects resolution, loops short animations smoothly, or adds dynamic pan-and-zoom motion to still frames.
+          </p>
+        </div>
+        <span class="text-xs font-mono text-zinc-500 bg-surface-800 px-3 py-1.5 rounded-lg border border-white/5 shrink-0">
+          MP4 / WebM / Images
+        </span>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="glass-card p-8 border border-white/10 flex flex-col md:flex-row items-start md:items-center gap-6">
+        <div class="w-14 h-14 rounded-2xl bg-amber-950 border border-amber-800 text-amber-400 font-black text-2xl flex items-center justify-center shrink-0">
+          02
+        </div>
+        <div class="space-y-1.5 flex-1">
+          <h2 class="text-lg font-bold text-white">Paste or Generate the Script</h2>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Write your custom dialogue, storytelling lines, or paste a prepared voiceover script. Alternatively, type a concept and let the autonomous story engine draft a high-retention narrative.
+          </p>
+        </div>
+        <span class="text-xs font-mono text-zinc-500 bg-surface-800 px-3 py-1.5 rounded-lg border border-white/5 shrink-0">
+          Custom Script
+        </span>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="glass-card p-8 border border-white/10 flex flex-col md:flex-row items-start md:items-center gap-6">
+        <div class="w-14 h-14 rounded-2xl bg-cyan-950 border border-cyan-800 text-cyan-400 font-black text-2xl flex items-center justify-center shrink-0">
+          03
+        </div>
+        <div class="space-y-1.5 flex-1">
+          <h2 class="text-lg font-bold text-white">Select Neural Voices or ElevenLabs</h2>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Choose from studio neural voices with natural inflection and pacing, or link your ElevenLabs API key to synthesize with your own voice clones and custom voice roster.
+          </p>
+        </div>
+        <span class="text-xs font-mono text-zinc-500 bg-surface-800 px-3 py-1.5 rounded-lg border border-white/5 shrink-0">
+          Studio / ElevenLabs
+        </span>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="glass-card p-8 border border-white/10 flex flex-col md:flex-row items-start md:items-center gap-6">
+        <div class="w-14 h-14 rounded-2xl bg-emerald-950 border border-emerald-800 text-emerald-400 font-black text-2xl flex items-center justify-center shrink-0">
+          04
+        </div>
+        <div class="space-y-1.5 flex-1">
+          <h2 class="text-lg font-bold text-white">Pick Kinetic Caption Typography</h2>
+          <p class="text-xs text-zinc-400 leading-relaxed">
+            Select high-impact animated caption styles: Gold Foil, Neon Cyan, TikTok Bold, Karaoke Glow, or Cinema Clean. Words highlight at millisecond precision matching the spoken audio.
+          </p>
+        </div>
+        <span class="text-xs font-mono text-zinc-500 bg-surface-800 px-3 py-1.5 rounded-lg border border-white/5 shrink-0">
+          Word-Level Timing
+        </span>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="glass-card p-8 border-brand-500/30 bg-gradient-to-r from-brand-950/20 to-surface-900 flex flex-col md:flex-row items-start md:items-center gap-6">
+        <div class="w-14 h-14 rounded-2xl bg-brand-600 text-white font-black text-2xl flex items-center justify-center shrink-0 shadow-lg shadow-brand-900/50">
+          05
+        </div>
+        <div class="space-y-1.5 flex-1">
+          <h2 class="text-lg font-bold text-white">One-Click Render &amp; Direct MP4 Export</h2>
+          <p class="text-xs text-zinc-300 leading-relaxed">
+            Click Generate. The video engine composites the video clips, mixes clean speech, burns in subtitles, and delivers a download-ready MP4 file within seconds.
+          </p>
+        </div>
+        <a href="/dashboard" class="btn-brand-glow px-5 py-3 rounded-xl text-center text-xs font-bold text-white shrink-0">
+          Try It in Studio &rarr;
+        </a>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 bg-[#070709] py-10 px-6 text-xs text-zinc-400 mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <img src="/static/deliverace_logo.png?v=5" alt="Deliverace" class="w-6 h-6 object-contain">
+        <span class="font-bold text-white">DELIVER<span class="text-brand-500">ACE</span> STUDIO</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="/modes" class="hover:text-white transition">Creation Modes</a>
+        <a href="/how-it-works" class="hover:text-white transition">Workflow</a>
+        <a href="/captions" class="hover:text-white transition">Captions</a>
+        <a href="/voices" class="hover:text-white transition">Voices</a>
+        <a href="/faq" class="hover:text-white transition">FAQ</a>
+      </div>
+      <div class="text-zinc-500">&copy; 2026 Deliverace Studio. All rights reserved.</div>
+    </div>
+  </footer>
+
+</body>
+</html>

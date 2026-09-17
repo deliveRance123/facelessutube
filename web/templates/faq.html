@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#09090b]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frequently Asked Questions • Deliverace Studio</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: { 500: '#f43f5e', 600: '#e11d48', 700: '#be123c', 800: '#9f1239', 950: '#4c0519' },
+            surface: { 950: '#09090b', 900: '#0f0f14', 850: '#14141c', 800: '#1a1a24' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/app.css?v=12">
+</head>
+<body class="bg-[#09090b] text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-rose-600 selection:text-white">
+
+  <!-- Flare -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[900px] h-[500px] bg-gradient-to-b from-brand-600/15 to-transparent blur-[140px]"></div>
+    <div class="absolute inset-0 bg-[radial-gradient(#ffffff08_1px,transparent_1px)] [background-size:28px_28px]"></div>
+  </div>
+
+  <!-- Header Navigation -->
+  <header class="sticky top-0 z-50 w-full border-b border-white/5 bg-[#09090b]/80 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3.5 group">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-500/20 to-brand-950/80 border border-brand-500/40 p-1.5 flex items-center justify-center shadow-lg shadow-brand-900/30 group-hover:border-brand-400 transition">
+          <img src="/static/deliverace_logo.png?v=5" alt="Deliverace" class="w-full h-full object-contain drop-shadow">
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xl font-black tracking-tight text-white font-sans">DELIVER<span class="text-brand-500">ACE</span></span>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-brand-950/80 border border-brand-800/80 text-brand-300">STUDIO</span>
+          </div>
+          <span class="text-[10px] text-zinc-400 font-semibold tracking-wider block -mt-0.5">AI Story &amp; Video Platform</span>
+        </div>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-zinc-300">
+        <a href="/modes" class="hover:text-white transition">Creation Modes</a>
+        <a href="/how-it-works" class="hover:text-white transition">How It Works</a>
+        <a href="/captions" class="hover:text-white transition">Caption Styles</a>
+        <a href="/voices" class="hover:text-white transition">Narration</a>
+        <a href="/faq" class="text-brand-400 font-bold">FAQ</a>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        {% if is_authenticated %}
+          <a href="/dashboard" class="btn-brand-glow px-5 py-2.5 rounded-xl text-white text-xs font-bold flex items-center gap-2">
+            <span>Studio Dashboard &rarr;</span>
+          </a>
+        {% else %}
+          <a href="/login" class="px-4 py-2.5 rounded-xl text-zinc-300 hover:text-white text-xs font-bold transition">Sign In</a>
+          <a href="/signup" class="btn-brand-glow px-5 py-2.5 rounded-xl text-white text-xs font-bold">Sign Up Free</a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="flex-1 max-w-4xl mx-auto px-6 py-16 relative z-10 space-y-12">
+    <div class="text-center max-w-2xl mx-auto space-y-4">
+      <span class="text-xs font-mono font-bold uppercase tracking-widest px-3 py-1 rounded-full bg-brand-950 border border-brand-800 text-brand-300">
+        Help &amp; Knowledge Base
+      </span>
+      <h1 class="text-4xl sm:text-5xl font-black text-white tracking-tight">Frequently Asked Questions</h1>
+      <p class="text-base text-zinc-400 leading-relaxed">
+        Everything you need to know about importing clips, voice synchronization, exports, and platform access.
+      </p>
+    </div>
+
+    <div class="space-y-4">
+      
+      <!-- FAQ 1: Meta AI -->
+      <div class="glass-card p-6 border border-white/10 space-y-2">
+        <h3 class="text-base font-bold text-white flex items-center gap-2.5">
+          <span class="text-brand-400 font-mono text-sm">Q:</span>
+          Can I import videos and animated clips created with Meta AI?
+        </h3>
+        <p class="text-xs text-zinc-400 leading-relaxed pl-6">
+          Yes! The <strong>Meta AI &amp; Animated Clips Studio</strong> is specifically designed for this. You can upload MP4, WebM, MOV, or animated GIF clips generated from Meta AI or any external source. Paste your dialogue or narration script, pick a neural voice and caption style, and Deliverace will render a synchronized final video.
+        </p>
+      </div>
+
+      <!-- FAQ 2: ElevenLabs -->
+      <div class="glass-card p-6 border border-white/10 space-y-2">
+        <h3 class="text-base font-bold text-white flex items-center gap-2.5">
+          <span class="text-brand-400 font-mono text-sm">Q:</span>
+          How does ElevenLabs integration work?
+        </h3>
+        <p class="text-xs text-zinc-400 leading-relaxed pl-6">
+          Deliverace supports <strong>BYOK (Bring Your Own Key)</strong>. In your dashboard settings or directly in the studio, enter your ElevenLabs API key. The platform immediately verifies your key and dynamically loads your custom cloned voices and library voices into your studio dropdown.
+        </p>
+      </div>
+
+      <!-- FAQ 3: Direct MP4 Download -->
+      <div class="glass-card p-6 border border-white/10 space-y-2">
+        <h3 class="text-base font-bold text-white flex items-center gap-2.5">
+          <span class="text-brand-400 font-mono text-sm">Q:</span>
+          Can I download my finished videos directly without watermarks?
+        </h3>
+        <p class="text-xs text-zinc-400 leading-relaxed pl-6">
+          Yes. Once your video is generated, it immediately appears in your studio player with an instant <strong>⬇️ Download MP4</strong> button. You own 100% of the exported files with no platform watermarks.
+        </p>
+      </div>
+
+      <!-- FAQ 4: Aspect Ratios -->
+      <div class="glass-card p-6 border border-white/10 space-y-2">
+        <h3 class="text-base font-bold text-white flex items-center gap-2.5">
+          <span class="text-brand-400 font-mono text-sm">Q:</span>
+          What video formats and aspect ratios are supported?
+        </h3>
+        <p class="text-xs text-zinc-400 leading-relaxed pl-6">
+          Deliverace generates both <strong>Vertical Shorts (9:16)</strong> for TikTok, Instagram Reels, and social channels, and <strong>Widescreen Cinema (16:9)</strong> for horizontal film productions and cinematic displays.
+        </p>
+      </div>
+
+      <!-- FAQ 5: Subscriptions & Admin Tiers -->
+      <div class="glass-card p-6 border border-white/10 space-y-2">
+        <h3 class="text-base font-bold text-white flex items-center gap-2.5">
+          <span class="text-brand-400 font-mono text-sm">Q:</span>
+          How do platform subscriptions and creator tiers work?
+        </h3>
+        <p class="text-xs text-zinc-400 leading-relaxed pl-6">
+          The platform operates with three tiers: <strong>Free</strong>, <strong>Pro</strong>, and <strong>Enterprise</strong>. Platform administrators have full console access to toggle between free open mode and subscription mode, as well as assign membership tiers to creators.
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Still Have Questions CTA -->
+    <div class="glass-card p-8 border-brand-500/30 text-center space-y-4 bg-gradient-to-b from-brand-950/20 to-surface-900">
+      <h3 class="text-xl font-bold text-white">Ready to start producing videos?</h3>
+      <p class="text-xs text-zinc-300 max-w-md mx-auto">
+        Join the next generation of automated storytellers and launch your first video project today.
+      </p>
+      <div class="pt-2">
+        <a href="/signup" class="btn-brand-glow inline-flex px-8 py-3.5 rounded-xl text-white font-bold text-xs">
+          Sign Up Free &bull; Open Studio &rarr;
+        </a>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-white/5 bg-[#070709] py-10 px-6 text-xs text-zinc-400 mt-auto">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <img src="/static/deliverace_logo.png?v=5" alt="Deliverace" class="w-6 h-6 object-contain">
+        <span class="font-bold text-white">DELIVER<span class="text-brand-500">ACE</span> STUDIO</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="/modes" class="hover:text-white transition">Creation Modes</a>
+        <a href="/how-it-works" class="hover:text-white transition">Workflow</a>
+        <a href="/captions" class="hover:text-white transition">Captions</a>
+        <a href="/voices" class="hover:text-white transition">Voices</a>
+        <a href="/faq" class="hover:text-white transition">FAQ</a>
+      </div>
+      <div class="text-zinc-500">&copy; 2026 Deliverace Studio. All rights reserved.</div>
+    </div>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#09090b]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Portal • Deliverace Platform</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Plus Jakarta Sans', 'sans-serif'] },
+          colors: {
+            brand: { 400: '#fbbf24', 500: '#f59e0b', 600: '#d97706' },
+            surface: { 800: '#18181b', 900: '#121215', 950: '#09090b' }
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="h-full text-zinc-100 flex items-center justify-center p-4 selection:bg-amber-500 selection:text-black">
+  <div class="max-w-md w-full p-8 rounded-3xl bg-surface-900 border border-amber-500/20 shadow-2xl shadow-amber-950/30">
+    <div class="text-center mb-8">
+      <div class="w-14 h-14 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center mx-auto mb-4 text-2xl shadow-lg">
+        🛡️
+      </div>
+      <h1 class="text-2xl font-black text-white">Deliverace Administration</h1>
+      <p class="text-xs text-zinc-400 mt-1">Dedicated portal for platform governance & tier management.</p>
+    </div>
+
+    <div id="loginAlert" class="hidden mb-4 p-3.5 rounded-xl text-xs font-semibold bg-rose-500/10 border border-rose-500/30 text-rose-300"></div>
+
+    <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+      <div>
+        <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-300 mb-1.5">Admin Identifier / Email</label>
+        <input 
+          type="text" 
+          id="adminEmail" 
+          required 
+          placeholder="admin or demo@neon.tech" 
+          class="w-full bg-[#16161b] border border-white/10 focus:border-amber-500 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition"
+        >
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-bold uppercase tracking-wider text-zinc-300 mb-1.5">Password / Master Key</label>
+        <input 
+          type="password" 
+          id="adminPassword" 
+          required 
+          placeholder="••••••••••••" 
+          class="w-full bg-[#16161b] border border-white/10 focus:border-amber-500 rounded-xl px-4 py-3 text-sm text-white placeholder-zinc-500 outline-none transition"
+        >
+      </div>
+
+      <button 
+        type="submit" 
+        id="adminSubmitBtn"
+        class="w-full mt-2 py-3.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-400 hover:to-amber-500 text-black font-extrabold text-sm shadow-lg shadow-amber-950 transition cursor-pointer flex items-center justify-center gap-2"
+      >
+        <span id="adminSubmitText">Authenticate as Administrator</span>
+      </button>
+    </form>
+
+    <div class="mt-8 pt-6 border-t border-white/5 text-center">
+      <span class="text-xs text-zinc-500">Deliverace Platform Security • Encrypted Session</span>
+    </div>
+  </div>
+
+  <script>
+    async function handleAdminLogin(e) {
+      e.preventDefault();
+      const email = document.getElementById('adminEmail').value.trim();
+      const password = document.getElementById('adminPassword').value.trim();
+      const alertBox = document.getElementById('loginAlert');
+      const submitBtn = document.getElementById('adminSubmitBtn');
+      const submitText = document.getElementById('adminSubmitText');
+
+      alertBox.classList.add('hidden');
+      submitBtn.disabled = true;
+      submitText.textContent = 'Verifying Credentials...';
+
+      try {
+        const res = await fetch('/api/admin/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ identifier: email, password: password })
+        });
+        const data = await res.json();
+
+        if (res.ok && data.status === 'success') {
+          window.location.href = '/admin';
+        } else {
+          alertBox.textContent = data.message || 'Access Denied: Administrator rights required.';
+          alertBox.classList.remove('hidden');
+        }
+      } catch (err) {
+        alertBox.textContent = 'Server connection error. Please try again.';
+        alertBox.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitText.textContent = 'Authenticate as Administrator';
+      }
+    }
+  </script>
+</body>
+</html>

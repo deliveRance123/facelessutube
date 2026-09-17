@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deliverace • AI Story Video Studio &amp; Character Animation Platform</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png?v=5">
+  
+  <!-- Fonts & Tailwind CSS CDN -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#fff1f2',
+              100: '#ffe4e6',
+              200: '#fecdd3',
+              300: '#fda4af',
+              400: '#fb7185',
+              500: '#f43f5e',
+              600: '#e11d48',
+              700: '#be123c',
+              800: '#9f1239',
+              900: '#881337',
+              950: '#4c0519',
+            },
+            surface: {
+              950: '#09090b',
+              900: '#0f0f13',
+              850: '#14141a',
+              800: '#1a1a23',
+              700: '#262634',
+              600: '#353548',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/app.css?v=12">
+  <!-- High-Priority Image Preload for Interactive Hero Showcase Frame -->
+  <link rel="preload" as="image" href="/static/hero_anime.webp" type="image/webp" fetchpriority="high">
+</head>
+<body class="bg-[#09090b] text-slate-100 font-sans antialiased selection:bg-rose-600 selection:text-white relative">
+  <!-- Background Atmospheric Lighting & Ambient Flare Layer (Zero Static Images) -->
+  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden select-none">
+    <!-- Top Ambient Radial Flare -->
+    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-gradient-to-b from-brand-600/15 via-amber-500/5 to-transparent blur-[140px]"></div>
+    <!-- Mid Section Ambient Flare -->
+    <div class="absolute top-[850px] -left-32 w-[600px] h-[600px] rounded-full bg-emerald-500/5 filter blur-3xl"></div>
+    <!-- Lower Section Ambient Flare -->
+    <div class="absolute top-[1600px] -right-32 w-[600px] h-[600px] rounded-full bg-brand-500/5 filter blur-3xl"></div>
+    <!-- Fine Dot Grid Matrix Pattern -->
+    <div class="absolute inset-0 bg-[radial-gradient(#ffffff0a_1px,transparent_1px)] [background-size:28px_28px]"></div>
+  </div>
+
+  <!-- ================= TOP NAVIGATION ================= -->
+  <header class="sticky top-0 z-50 w-full border-b border-white/5 bg-[#09090b]/80 backdrop-blur-xl">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="/" class="flex items-center gap-3.5 group">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-br from-brand-500/20 to-brand-950/80 border border-brand-500/40 p-1.5 flex items-center justify-center shadow-lg shadow-brand-900/30 group-hover:border-brand-400 transition">
+          <img src="/static/deliverace_logo.png?v=5" alt="Deliverace" class="w-full h-full object-contain drop-shadow">
+        </div>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span class="text-xl font-black tracking-tight text-white font-sans">DELIVER<span class="text-brand-500">ACE</span></span>
+            <span class="text-[10px] font-mono font-bold uppercase tracking-wider px-1.5 py-0.5 rounded bg-brand-950/80 border border-brand-800/80 text-brand-300">STUDIO</span>
+          </div>
+          <span class="text-[10px] text-zinc-400 font-semibold tracking-wider block -mt-0.5">AI Story &amp; Video Platform</span>
+        </div>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-zinc-300">
+        <a href="/modes" class="hover:text-white transition">Creation Modes</a>
+        <a href="/how-it-works" class="hover:text-white transition">How It Works</a>
+        <a href="/captions" class="hover:text-white transition">Caption Styles</a>
+        <a href="/voices" class="hover:text-white transition">Narration</a>
+        <a href="/faq" class="hover:text-white transition">FAQ</a>
+      </nav>
+
+
+      <!-- Auth Action Buttons: Strictly Sign In / Sign Up (No Direct Guest Bypass) -->
+      <div class="flex items-center gap-3">
+        {% if is_authenticated %}
+          <a href="/dashboard" class="px-5 py-2.5 rounded-xl bg-emerald-500/15 border border-emerald-500/40 hover:bg-emerald-500/25 text-emerald-300 text-xs font-bold transition flex items-center gap-2 shadow-sm">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Studio Dashboard &rarr;</span>
+          </a>
+          <a href="/logout" class="px-3 py-2 rounded-xl text-zinc-400 hover:text-white text-xs font-semibold transition" title="Log Out">
+            Log Out
+          </a>
+        {% else %}
+          <a href="/login" class="px-4 py-2.5 rounded-xl text-zinc-300 hover:text-white text-xs font-bold transition">
+            Sign In
+          </a>
+          <a href="/signup" class="btn-brand-glow px-5 py-2.5 rounded-xl text-white text-xs font-bold tracking-wide flex items-center gap-2 shadow-lg shadow-brand-950/50">
+            <span>Sign Up Free &rarr;</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO SECTION ================= -->
+  <section class="relative pt-16 pb-24 px-6 max-w-7xl mx-auto z-10">
+    <div class="text-center max-w-3xl mx-auto space-y-6">
+      
+      <!-- Studio Pill Badge -->
+      <div class="inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full bg-surface-900/90 border border-amber-500/30 text-xs font-semibold text-zinc-300 shadow-xl backdrop-blur-md">
+        <span class="flex h-2 w-2 relative">
+          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"></span>
+          <span class="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+        </span>
+        <span class="tracking-wide text-amber-300 font-bold">✨ Multi-Image Story Studio</span>
+        <span class="text-zinc-500">&bull;</span>
+        <span class="text-zinc-400">Cartoons, Anime, Sci-Fi &amp; Cinematic Epics</span>
+      </div>
+
+      <!-- Main Headline -->
+      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-black tracking-tight text-white leading-[1.08]">
+        Turn Any Images &amp; Prompts Into <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-400 via-rose-300 to-amber-300">Animated Story Videos.</span>
+      </h1>
+
+      <!-- Value Proposition Subtitle -->
+      <p class="text-base sm:text-lg text-zinc-300 leading-relaxed font-normal max-w-2xl mx-auto">
+        Import your consistent characters, scenes, or digital art. Type any prompt or paste your custom script. Watch as each image springs to life with cinematic camera motions, expressive voice narration, and customizable viral captions in seconds.
+      </p>
+
+      <!-- CTA Buttons Group (Sign Up or Sign In Only) -->
+      <div class="flex flex-wrap items-center justify-center gap-4 pt-4">
+        {% if is_authenticated %}
+          <a href="/dashboard" class="btn-brand-glow px-8 py-4 rounded-xl text-white font-extrabold text-sm tracking-wide shadow-2xl flex items-center gap-3">
+            <span>Enter Studio Dashboard</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        {% else %}
+          <a href="/signup" class="btn-brand-glow px-8 py-4 rounded-xl text-white font-extrabold text-sm tracking-wide shadow-2xl flex items-center gap-3">
+            <span>Sign Up Free &bull; Start Creating</span>
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+          <a href="/login" class="px-7 py-4 rounded-xl bg-surface-850 hover:bg-surface-800 text-zinc-200 border border-white/10 hover:border-white/20 font-bold text-sm transition flex items-center gap-2.5">
+            <span>Sign In to Account</span>
+          </a>
+        {% endif %}
+      </div>
+
+      <!-- Feature Highlights Row -->
+      <div class="pt-6 flex flex-wrap items-center justify-center gap-y-2 gap-x-6 text-xs text-zinc-400 font-medium">
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Consistent Character Animation</span>
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Any Genre: Anime, Cartoons, Sci-Fi, Thrillers</span>
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> 5 Caption Templates (or Captions Off)</span>
+        <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-400" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Ultra-Fast MP4 Export &bull; No Watermarks</span>
+      </div>
+
+      <!-- Visual Genre Showcase Ribbon -->
+      <div class="pt-8 max-w-4xl mx-auto grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-amber-500/50 transition-all duration-300 shadow-lg aspect-[4/3]">
+          <img src="/static/hero_anime.webp" alt="Anime Art" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex items-end p-2.5">
+            <span class="text-[11px] font-bold text-white tracking-wide flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+              <span>Anime Sagas</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-cyan-500/50 transition-all duration-300 shadow-lg aspect-[4/3]">
+          <img src="/static/genre_cyberpunk.webp" alt="Cyberpunk Art" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex items-end p-2.5">
+            <span class="text-[11px] font-bold text-white tracking-wide flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+              <span>Cyberpunk Sci-Fi</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-emerald-500/50 transition-all duration-300 shadow-lg aspect-[4/3]">
+          <img src="/static/genre_cartoon.webp" alt="3D Animation" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex items-end p-2.5">
+            <span class="text-[11px] font-bold text-white tracking-wide flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+              <span>3D Animation</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-rose-500/50 transition-all duration-300 shadow-lg aspect-[4/3]">
+          <img src="/static/genre_cinema.webp" alt="Cinematic Movie" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
+          <div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/30 to-transparent flex items-end p-2.5">
+            <span class="text-[11px] font-bold text-white tracking-wide flex items-center gap-1.5">
+              <span class="w-2 h-2 rounded-full bg-rose-400"></span>
+              <span>Cinematic Movies</span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ================= HERO PRODUCT SHOWCASE ================= -->
+    <div class="mt-14 max-w-5xl mx-auto relative">
+      
+      <!-- Left Floating Live Scene Badge (Desktop) -->
+      <div class="hidden xl:flex absolute -left-16 top-32 z-20 items-center gap-3 p-3 rounded-2xl bg-surface-900/95 border border-amber-500/40 backdrop-blur-xl shadow-2xl shadow-black/80 animate-float-slow max-w-[230px] hover:border-amber-400 transition cursor-pointer" onclick="selectHeroScenario('fantasy')">
+        <div class="w-12 h-12 rounded-xl overflow-hidden border border-amber-500/40 shrink-0">
+          <img src="/static/hero_anime.webp" alt="Anime Scene" class="w-full h-full object-cover" decoding="async">
+        </div>
+        <div class="text-left leading-tight">
+          <div class="flex items-center gap-1.5 mb-1">
+            <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+            <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-amber-300">Scene 1 &bull; Active</span>
+          </div>
+          <div class="text-xs font-black text-white truncate">The Chosen Sword</div>
+          <div class="text-[10px] text-zinc-400 font-mono mt-0.5">Pan &amp; Zoom 1.25x</div>
+        </div>
+      </div>
+
+      <!-- Right Floating Live Scene Badge (Desktop) -->
+      <div class="hidden xl:flex absolute -right-16 top-48 z-20 items-center gap-3 p-3 rounded-2xl bg-surface-900/95 border border-cyan-500/40 backdrop-blur-xl shadow-2xl shadow-black/80 animate-float-alt max-w-[230px] hover:border-cyan-400 transition cursor-pointer" onclick="selectHeroScenario('cyberpunk')">
+        <div class="w-12 h-12 rounded-xl overflow-hidden border border-cyan-500/40 shrink-0">
+          <img src="/static/genre_cyberpunk.webp" alt="Cyberpunk Scene" class="w-full h-full object-cover" decoding="async">
+        </div>
+        <div class="text-left leading-tight">
+          <div class="flex items-center gap-1.5 mb-1">
+            <span class="w-2 h-2 rounded-full bg-cyan-400"></span>
+            <span class="text-[9px] font-mono font-bold uppercase tracking-wider text-cyan-300">Captions &bull; Cyber Glow</span>
+          </div>
+          <div class="text-xs font-black text-white truncate">Neo-Tokyo 2099</div>
+          <div class="text-[10px] text-zinc-400 font-mono mt-0.5">0:45 &bull; 60 FPS Export</div>
+        </div>
+      </div>
+
+      <!-- Format Switcher Bar -->
+      <div class="flex items-center justify-between bg-surface-900/90 border border-white/10 rounded-2xl p-2.5 mb-5 max-w-md mx-auto backdrop-blur-md shadow-2xl">
+        <button id="toggle-shorts" onclick="switchShowcaseFormat('short')" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 format-toggle-active">
+          <span>📱</span>
+          <span>Vertical Shorts (9:16)</span>
+        </button>
+        <button id="toggle-long" onclick="switchShowcaseFormat('long')" class="flex-1 py-2 px-4 rounded-xl text-xs font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2">
+          <span>🖥️</span>
+          <span>Cinema Widescreen (16:9)</span>
+        </button>
+      </div>
+
+      <!-- Showcase Frame -->
+      <div class="showcase-frame p-4 sm:p-6 bg-surface-900/90 border border-white/10 rounded-3xl relative shadow-2xl">
+        
+        <!-- Window Top Bar -->
+        <div class="flex items-center justify-between pb-4 border-b border-white/5 mb-6 text-xs text-zinc-400">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-rose-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-500/80"></span>
+            <span class="w-3 h-3 rounded-full bg-emerald-500/80"></span>
+            <span class="font-mono text-zinc-300 ml-2 font-semibold" id="showcase-title-bar">Deliverace Studio &bull; Animated Story Production</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span id="showcase-motion-badge" class="px-2.5 py-1 rounded-md bg-amber-950/80 border border-amber-800 text-amber-300 text-[11px] font-mono font-bold transition-all">
+              Camera Motion: Pan &amp; Zoom Active
+            </span>
+          </div>
+        </div>
+
+        <!-- 1. SHORTS PREVIEW DISPLAY (VERTICAL) -->
+        <div id="shorts-preview-box" class="flex flex-col md:flex-row items-center justify-center gap-8 py-4">
+          
+          <!-- Smartphone Vertical Frame with Kinetic Subtitles and Pulse Glow -->
+          <div id="hero-phone-frame" class="w-[280px] sm:w-[310px] aspect-[9/16] rounded-3xl overflow-hidden relative border-4 border-amber-500/40 shadow-2xl bg-black shrink-0 group animate-glow-amber transition-all duration-500">
+            <!-- Animated Scene Image with Crossfade -->
+            <img id="hero-phone-img" src="/static/hero_anime.webp" alt="Animated Story Scene" class="w-full h-full object-cover transition-opacity duration-300" fetchpriority="high" decoding="async">
+            
+            <!-- Overlays -->
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-black/60 flex flex-col justify-between p-4 pointer-events-none">
+              
+              <!-- Top Badge -->
+              <div class="flex items-center justify-between text-white text-xs">
+                <span id="hero-genre-badge" class="bg-amber-500 text-black font-black text-[9px] px-2 py-0.5 rounded uppercase tracking-wider transition-colors">Story Mode</span>
+                <span id="hero-duration-badge" class="text-[10px] font-mono bg-black/60 px-2 py-0.5 rounded border border-white/10">0:30</span>
+              </div>
+
+              <!-- Animated Kinetic Karaoke Captions on Video Center -->
+              <div class="text-center my-auto px-2">
+                <div id="hero-caption-card" class="inline-block bg-black/85 backdrop-blur-md px-3.5 py-2.5 rounded-xl border border-amber-500/40 shadow-lg transition-all duration-300">
+                  <p id="hero-caption-text" class="text-xs sm:text-sm font-black uppercase tracking-wide text-amber-300 leading-tight space-x-1">
+                    <span class="inline-block word-karaoke-1">IN THE CITADEL</span>
+                    <span class="inline-block word-karaoke-2">OF AETHEL,</span>
+                    <span class="inline-block word-karaoke-3 text-white underline decoration-amber-400 decoration-2">THE CHOSEN SWORD</span>
+                    <span class="inline-block word-karaoke-4">AWAKENS</span>
+                    <span class="inline-block word-karaoke-5">TO PROTECT.</span>
+                  </p>
+                </div>
+              </div>
+
+              <!-- Bottom Creator Info -->
+              <div class="space-y-2">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-full border-2 border-amber-400 overflow-hidden bg-zinc-800 shrink-0">
+                    <img src="/static/deliverace_logo.png" class="w-full h-full object-contain">
+                  </div>
+                  <div class="truncate">
+                    <p id="hero-creator-tag" class="text-white text-xs font-bold truncate">@SkywardLegends</p>
+                    <p id="hero-creator-ep" class="text-[10px] text-zinc-300">Ep. 1 &bull; The Floating Realm</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Feature Description Aside with Interactive Scenario Switcher -->
+          <div class="max-w-md space-y-4 text-left">
+            
+            <!-- Interactive Live Genre Switcher Controls -->
+            <div class="p-3.5 rounded-2xl bg-surface-850/90 border border-white/10 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="text-[11px] font-mono font-bold uppercase tracking-wider text-zinc-400">⚡ Interactive Genre Switcher:</span>
+                <span class="text-[10px] text-amber-400 font-mono">Live Crossfade</span>
+              </div>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" onclick="selectHeroScenario('fantasy')" id="btn-scenario-fantasy" class="px-3 py-1.5 rounded-xl text-xs font-bold transition border border-white/10 flex items-center gap-1.5 scenario-btn-active-amber">
+                  <span>⚔️</span>
+                  <span>Anime Citadel</span>
+                </button>
+                <button type="button" onclick="selectHeroScenario('cyberpunk')" id="btn-scenario-cyberpunk" class="px-3 py-1.5 rounded-xl text-xs font-bold text-zinc-400 hover:text-white transition border border-white/10 hover:border-cyan-500/50 flex items-center gap-1.5">
+                  <span>🚀</span>
+                  <span>Cyberpunk 2099</span>
+                </button>
+                <button type="button" onclick="selectHeroScenario('cartoon')" id="btn-scenario-cartoon" class="px-3 py-1.5 rounded-xl text-xs font-bold text-zinc-400 hover:text-white transition border border-white/10 hover:border-emerald-500/50 flex items-center gap-1.5">
+                  <span>🦊</span>
+                  <span>Fable Forest</span>
+                </button>
+              </div>
+            </div>
+
+            <span id="hero-feature-tag" class="inline-block text-xs font-mono font-bold text-amber-400 uppercase tracking-widest bg-amber-950/60 px-2.5 py-1 rounded border border-amber-500/30">
+              Multi-Image Scene Consistency
+            </span>
+            <h3 id="hero-feature-title" class="text-2xl font-black text-white leading-tight">
+              Bring Multiple Images. Get a Seamless Animated Story.
+            </h3>
+            <p id="hero-feature-desc" class="text-xs sm:text-sm text-zinc-300 leading-relaxed">
+              Import 3, 5, or 10 illustrations of your character. Our cinematic motion engine orchestrates fluid zoom-in, zoom-out, and lateral pan transitions for each scene, matching the narration cadence beat-for-beat.
+            </p>
+            <div class="space-y-2.5 pt-2">
+              <div class="flex items-center gap-3 text-xs text-zinc-300">
+                <div class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-[11px] shrink-0">&check;</div>
+                <span>Cinematic Ken Burns camera panning on every image</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs text-zinc-300">
+                <div class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-[11px] shrink-0">&check;</div>
+                <span>Word-accurate subtitle timing with customizable styles</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs text-zinc-300">
+                <div class="w-5 h-5 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center font-bold text-[11px] shrink-0">&check;</div>
+                <span>Dynamic background audio mixing with automatic speech ducking</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. WIDESCREEN PREVIEW DISPLAY (16:9) -->
+        <div id="long-preview-box" class="hidden flex-col items-center justify-center gap-6 py-4">
+          <div class="w-full max-w-2xl aspect-[16/9] rounded-2xl overflow-hidden relative border-2 border-white/10 shadow-2xl bg-black">
+            <!-- Real High-Res Cyberpunk Widescreen Image -->
+            <img src="/static/genre_cyberpunk.webp" alt="Cyberpunk City Widescreen" class="w-full h-full object-cover" loading="lazy" decoding="async">
+            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-black/60 flex flex-col justify-between p-6">
+              <div class="flex items-center justify-between text-white">
+                <span class="bg-cyan-500 text-black font-extrabold text-[10px] px-2.5 py-0.5 rounded uppercase tracking-wider">Cinematic Widescreen</span>
+                <span class="text-xs font-mono bg-black/60 px-2.5 py-0.5 rounded border border-white/10">Full Story Documentary</span>
+              </div>
+              <div class="text-center my-auto max-w-lg mx-auto">
+                <div class="inline-block bg-black/80 backdrop-blur-md px-4 py-2.5 rounded-xl border border-cyan-500/40 shadow-xl">
+                  <p class="text-sm sm:text-base font-bold text-cyan-300 tracking-wide">
+                    "IN THE DIGITAL HEART OF NEO-TOKYO, SILENCE SPEAKS LOUDEST."
+                  </p>
+                </div>
+              </div>
+              <div class="flex items-center justify-between text-xs text-zinc-400">
+                <span>HD 1080p Horizontal Export</span>
+                <span>Ready for Cinema &amp; Social Displays</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= SECTION: CREATION MODES ================= -->
+  <section id="creation-modes" class="py-24 px-6 max-w-7xl mx-auto z-10 relative">
+    <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-900 border border-white/10 text-xs font-bold text-brand-400 uppercase tracking-widest">
+        Endless Creativity
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        Build Any Type of Story Video
+      </h2>
+      <p class="text-sm text-zinc-400">
+        From animated comic strips and anime sagas to futuristic sci-fi mysteries and educational documentaries.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      
+      <!-- Card 1: 3D Animation & Cartoons -->
+      <div class="glass-card overflow-hidden group border border-white/10 hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between">
+        <div>
+          <div class="h-44 w-full overflow-hidden relative">
+            <img src="/static/genre_cartoon.webp" alt="3D Animation" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent"></div>
+            <span class="absolute top-3 left-3 bg-emerald-500/90 text-black text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full">
+              3D Animation
+            </span>
+          </div>
+          <div class="p-5 space-y-2">
+            <h3 class="text-base font-bold text-white">Cartoons &amp; Kids Stories</h3>
+            <p class="text-xs text-zinc-300 leading-relaxed">
+              Bring adorable characters, woodland adventurers, and fairy tales to life with Pixar-style 3D charm and whimsical music.
+            </p>
+          </div>
+        </div>
+        <div class="p-5 pt-0">
+          <span class="inline-block text-[10px] font-mono text-emerald-300 bg-emerald-950/80 px-2 py-0.5 rounded border border-emerald-800">
+            Whimsical &bull; High Retention
+          </span>
+        </div>
+      </div>
+
+      <!-- Card 2: Sci-Fi & Cyberpunk -->
+      <div class="glass-card overflow-hidden group border border-white/10 hover:border-cyan-500/40 transition-all duration-300 flex flex-col justify-between">
+        <div>
+          <div class="h-44 w-full overflow-hidden relative">
+            <img src="/static/genre_cyberpunk.webp" alt="Sci-Fi Cyberpunk" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent"></div>
+            <span class="absolute top-3 left-3 bg-cyan-400 text-black text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full">
+              Sci-Fi &bull; Tech
+            </span>
+          </div>
+          <div class="p-5 space-y-2">
+            <h3 class="text-base font-bold text-white">Cyberpunk &amp; Thrillers</h3>
+            <p class="text-xs text-zinc-300 leading-relaxed">
+              Futuristic cityscapes, dystopian mysteries, high-tech rebellions, and electric cyber thrillers with glowing cyan captions.
+            </p>
+          </div>
+        </div>
+        <div class="p-5 pt-0">
+          <span class="inline-block text-[10px] font-mono text-cyan-300 bg-cyan-950/80 px-2 py-0.5 rounded border border-cyan-800">
+            Explosive CTR &bull; Viral
+          </span>
+        </div>
+      </div>
+
+      <!-- Card 3: Cinematic Movies & Drama -->
+      <div class="glass-card overflow-hidden group border border-white/10 hover:border-rose-500/40 transition-all duration-300 flex flex-col justify-between">
+        <div>
+          <div class="h-44 w-full overflow-hidden relative">
+            <img src="/static/genre_cinema.webp" alt="Cinematic Movie" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent"></div>
+            <span class="absolute top-3 left-3 bg-rose-500 text-white text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full">
+              Cinema &bull; Drama
+            </span>
+          </div>
+          <div class="p-5 space-y-2">
+            <h3 class="text-base font-bold text-white">Cinematic Noir &amp; Drama</h3>
+            <p class="text-xs text-zinc-300 leading-relaxed">
+              Movie trailers, psychological mysteries, intense crime stories, and cliffhangers with movie-style letterbox captions.
+            </p>
+          </div>
+        </div>
+        <div class="p-5 pt-0">
+          <span class="inline-block text-[10px] font-mono text-rose-300 bg-rose-950/80 px-2 py-0.5 rounded border border-rose-800">
+            Dark Intrigue &bull; Suspense
+          </span>
+        </div>
+      </div>
+
+      <!-- Card 4: Anime & Fantasy Epics -->
+      <div class="glass-card overflow-hidden group border border-white/10 hover:border-amber-500/40 transition-all duration-300 flex flex-col justify-between">
+        <div>
+          <div class="h-44 w-full overflow-hidden relative">
+            <img src="/static/hero_anime.webp" alt="Anime Fantasy Epics" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" loading="lazy" decoding="async">
+            <div class="absolute inset-0 bg-gradient-to-t from-surface-900 via-transparent to-transparent"></div>
+            <span class="absolute top-3 left-3 bg-amber-400 text-black text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-full">
+              Anime &bull; Fantasy
+            </span>
+          </div>
+          <div class="p-5 space-y-2">
+            <h3 class="text-base font-bold text-white">Anime &amp; Fantasy Epics</h3>
+            <p class="text-xs text-zinc-300 leading-relaxed">
+              Hero journeys, floating magical kingdoms, ancient battles, and manga-style story adaptations with dramatic camera movement.
+            </p>
+          </div>
+        </div>
+        <div class="p-5 pt-0">
+          <span class="inline-block text-[10px] font-mono text-amber-300 bg-amber-950/80 px-2 py-0.5 rounded border border-amber-800">
+            Character Continuity &bull; Epic
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION: HOW IT WORKS ================= -->
+  <section id="how-it-works" class="py-24 px-6 max-w-7xl mx-auto z-10 relative">
+    <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-900 border border-white/10 text-xs font-bold text-brand-400 uppercase tracking-widest">
+        Simple 3-Step Creation
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        From Idea to Polished Video in Minutes
+      </h2>
+      <p class="text-sm text-zinc-400">
+        No complicated timeline editors. No expensive camera rigs. Pure automated storytelling.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      
+      <!-- Step 1 Card -->
+      <div class="glass-card p-8 relative flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-amber-950/80 border border-amber-800 text-amber-400 font-mono font-black text-lg flex items-center justify-center shadow-lg">
+            01
+          </div>
+          <h3 class="text-xl font-bold text-white">Import Images or Face</h3>
+          <p class="text-sm text-zinc-300 leading-relaxed">
+            Upload images of your consistent characters, scenery, or digital illustrations generated anywhere, or choose from our studio library.
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400 font-mono">
+          <span>Supported</span>
+          <span class="text-amber-400 font-bold">JPG &bull; PNG &bull; WebP</span>
+        </div>
+      </div>
+
+      <!-- Step 2 Card -->
+      <div class="glass-card p-8 relative flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-brand-950/80 border border-brand-800 text-brand-400 font-mono font-black text-lg flex items-center justify-center shadow-lg">
+            02
+          </div>
+          <h3 class="text-xl font-bold text-white">Prompt or Paste Script</h3>
+          <p class="text-sm text-zinc-300 leading-relaxed">
+            Type any creative story idea to automatically compose structured scenes, or paste your pre-written script with your own dialogue and hooks.
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400 font-mono">
+          <span>Scripting</span>
+          <span class="text-brand-400 font-bold">Custom or Smart AI</span>
+        </div>
+      </div>
+
+      <!-- Step 3 Card -->
+      <div class="glass-card p-8 relative flex flex-col justify-between">
+        <div class="space-y-4">
+          <div class="w-12 h-12 rounded-2xl bg-cyan-950/80 border border-cyan-800 text-cyan-400 font-mono font-black text-lg flex items-center justify-center shadow-lg">
+            03
+          </div>
+          <h3 class="text-xl font-bold text-white">Generate &amp; Download MP4</h3>
+          <p class="text-sm text-zinc-300 leading-relaxed">
+            The studio animates your images with dynamic motion, syncs natural narration, applies your chosen caption style, and exports a lightweight MP4.
+          </p>
+        </div>
+        <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between text-xs text-zinc-400 font-mono">
+          <span>Output</span>
+          <span class="text-cyan-400 font-bold">Instant MP4 Export</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION: CAPTION STYLES ================= -->
+  <section id="captions" class="py-24 px-6 max-w-7xl mx-auto z-10 relative">
+    <div class="text-center max-w-2xl mx-auto mb-16 space-y-3">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-surface-900 border border-white/10 text-xs font-bold text-amber-400 uppercase tracking-widest">
+        Custom Typography
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+        Optional Stylized Caption Templates
+      </h2>
+      <p class="text-sm text-zinc-400">
+        Choose from trending viral subtitle styles that maximize viewer watch-time, or turn captions completely off for clean cinematic visuals.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+      
+      <!-- Style 1: Gold -->
+      <div class="glass-card p-5 text-center space-y-3 border border-yellow-500/30">
+        <span class="text-2xl">🌟</span>
+        <h4 class="text-sm font-bold text-white">Viral Gold</h4>
+        <div class="bg-black/60 p-3 rounded-lg border border-yellow-500/20">
+          <span class="font-black text-xs text-yellow-400 uppercase">"THE RECKONING"</span>
+        </div>
+        <p class="text-[11px] text-zinc-400">High-contrast yellow with dark shadow. Proven on TikTok and Reels.</p>
+      </div>
+
+      <!-- Style 2: Cyber Glow -->
+      <div class="glass-card p-5 text-center space-y-3 border border-cyan-500/30">
+        <span class="text-2xl">💎</span>
+        <h4 class="text-sm font-bold text-white">Cyber Glow</h4>
+        <div class="bg-black/60 p-3 rounded-lg border border-cyan-500/20">
+          <span class="font-black text-xs text-cyan-300 uppercase">"FUTURE CODE"</span>
+        </div>
+        <p class="text-[11px] text-zinc-400">Luminous cyan glow tailored for sci-fi, tech, and modern thrillers.</p>
+      </div>
+
+      <!-- Style 3: Cinema -->
+      <div class="glass-card p-5 text-center space-y-3 border border-zinc-500/30">
+        <span class="text-2xl">🎬</span>
+        <h4 class="text-sm font-bold text-white">Classic Cinema</h4>
+        <div class="bg-black/60 p-3 rounded-lg border border-white/20">
+          <span class="font-semibold text-xs text-white">"A silent truth..."</span>
+        </div>
+        <p class="text-[11px] text-zinc-400">Crisp movie-style subtitles positioned at the lower letterbox margin.</p>
+      </div>
+
+      <!-- Style 4: Minimalist -->
+      <div class="glass-card p-5 text-center space-y-3 border border-zinc-600/30">
+        <span class="text-2xl">🕊️</span>
+        <h4 class="text-sm font-bold text-white">Minimalist Clean</h4>
+        <div class="bg-black/60 p-3 rounded-lg border border-white/10">
+          <span class="text-xs text-zinc-200">Refined simplicity</span>
+        </div>
+        <p class="text-[11px] text-zinc-400">Elegant translucent background bar for documentary narratives.</p>
+      </div>
+
+      <!-- Style 5: None -->
+      <div class="glass-card p-5 text-center space-y-3 border border-rose-500/30">
+        <span class="text-2xl">🚫</span>
+        <h4 class="text-sm font-bold text-white">Captions Off</h4>
+        <div class="bg-black/60 p-3 rounded-lg border border-rose-500/20">
+          <span class="text-xs text-zinc-500 italic">No Subtitles</span>
+        </div>
+        <p class="text-[11px] text-zinc-400">Pure, unobstructed artwork and 2x faster video render times.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ================= SECTION: INTERACTIVE VOICE ROSTER ================= -->
+  <section id="voices" class="py-24 px-6 max-w-7xl mx-auto z-10 relative">
+    <div class="bg-surface-900/80 border border-white/10 rounded-3xl p-8 sm:p-12 relative overflow-hidden backdrop-blur-xl shadow-2xl">
+      <!-- Subtle Ambient Glow -->
+      <div class="absolute -top-24 -right-24 w-96 h-96 bg-brand-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-cyan-600/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-2xl mb-12 space-y-3 relative z-10">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-950/80 border border-brand-800 text-xs font-bold text-brand-300 uppercase tracking-widest">
+          Studio-Grade Narration
+        </div>
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          Listen to Voice Narration Samples
+        </h2>
+        <p class="text-sm text-zinc-300 leading-relaxed">
+          Expressive neural voice actors bring your story scripts to life with cinematic pacing, suspense, and emotional resonance.
+        </p>
+      </div>
+
+      <!-- Voice Sample Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        
+        <!-- Voice 1: Christopher -->
+        <div class="glass-card p-5 flex flex-col justify-between border border-brand-500/30">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-0.5 rounded-full bg-brand-950 text-brand-300 text-[10px] font-mono font-bold border border-brand-800">RECOMMENDED</span>
+              <span class="text-xs text-zinc-400">Deep &bull; Stoic</span>
+            </div>
+            <h4 class="text-lg font-bold text-white">Christopher</h4>
+            <p class="text-xs text-zinc-400 mt-1">Deep authoritative tone crafted for epics, power rules, and stoic lore.</p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+            <button onclick="playLandingVoice('en-US-ChristopherNeural', this)" class="voice-play-btn w-full py-2.5 px-4 rounded-xl bg-surface-800 hover:bg-brand-600 text-white font-bold text-xs transition flex items-center justify-center gap-2">
+              <span class="play-icon">▶</span>
+              <span class="btn-label">Listen Sample</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Voice 2: Guy -->
+        <div class="glass-card p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-0.5 rounded-full bg-surface-800 text-zinc-300 text-[10px] font-mono font-bold border border-white/10">DRAMATIC</span>
+              <span class="text-xs text-zinc-400">Narrator &bull; Male</span>
+            </div>
+            <h4 class="text-lg font-bold text-white">Guy</h4>
+            <p class="text-xs text-zinc-400 mt-1">Dynamic storytelling cadence built for mystery, anime, and suspense.</p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+            <button onclick="playLandingVoice('en-US-GuyNeural', this)" class="voice-play-btn w-full py-2.5 px-4 rounded-xl bg-surface-800 hover:bg-brand-600 text-white font-bold text-xs transition flex items-center justify-center gap-2">
+              <span class="play-icon">▶</span>
+              <span class="btn-label">Listen Sample</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Voice 3: Sonia -->
+        <div class="glass-card p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-0.5 rounded-full bg-surface-800 text-zinc-300 text-[10px] font-mono font-bold border border-white/10">ENGAGING</span>
+              <span class="text-xs text-zinc-400">Documentary &bull; Female</span>
+            </div>
+            <h4 class="text-lg font-bold text-white">Sonia</h4>
+            <p class="text-xs text-zinc-400 mt-1">Warm, captivating narrator ideal for educational stories and documentaries.</p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+            <button onclick="playLandingVoice('en-GB-SoniaNeural', this)" class="voice-play-btn w-full py-2.5 px-4 rounded-xl bg-surface-800 hover:bg-brand-600 text-white font-bold text-xs transition flex items-center justify-center gap-2">
+              <span class="play-icon">▶</span>
+              <span class="btn-label">Listen Sample</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Voice 4: Custom Voice Studio -->
+        <div class="glass-card p-5 flex flex-col justify-between border border-emerald-500/30">
+          <div>
+            <div class="flex items-center justify-between mb-3">
+              <span class="px-2.5 py-0.5 rounded-full bg-emerald-950 text-emerald-300 text-[10px] font-mono font-bold border border-emerald-800">PERSONAL</span>
+              <span class="text-xs text-zinc-400">Custom Audio</span>
+            </div>
+            <h4 class="text-lg font-bold text-white">Custom Voice Cloner</h4>
+            <p class="text-xs text-zinc-400 mt-1">Connect your own voice provider account or upload a 30s audio sample in the studio.</p>
+          </div>
+          <div class="mt-6 pt-4 border-t border-white/5 flex items-center justify-between">
+            <a href="/signup" class="w-full py-2.5 px-4 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white font-bold text-xs border border-emerald-500/40 transition flex items-center justify-center gap-2 text-center">
+              <span>🎙️ Calibrate in Studio</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Hidden Audio Player for Landing Voice Samples -->
+      <audio id="landingAudioPlayer" class="hidden"></audio>
+    </div>
+  </section>
+
+  <!-- ================= SECTION: FAQ ================= -->
+  <section id="faq" class="py-24 px-6 max-w-4xl mx-auto z-10 relative">
+    <div class="text-center mb-12 space-y-2">
+      <h2 class="text-3xl font-extrabold text-white">Frequently Asked Questions</h2>
+      <p class="text-xs text-zinc-400">Everything you need to know about creating videos with Deliverace.</p>
+    </div>
+
+    <div class="space-y-4">
+      <div class="glass-card p-6">
+        <h4 class="text-sm font-bold text-white mb-2">Can I generate videos using my own character images?</h4>
+        <p class="text-xs text-zinc-300 leading-relaxed">
+          Yes! You can upload multiple images of your consistent character or scenes. The engine keeps the visual continuity across all shots while applying cinematic camera motion.
+        </p>
+      </div>
+
+      <div class="glass-card p-6">
+        <h4 class="text-sm font-bold text-white mb-2">Can I paste my own custom script?</h4>
+        <p class="text-xs text-zinc-300 leading-relaxed">
+          Absolutely. You can type or paste any pre-written script, or enter a short topic idea to let the studio write a complete scene-by-scene narration for you.
+        </p>
+      </div>
+
+      <div class="glass-card p-6">
+        <h4 class="text-sm font-bold text-white mb-2">Are the generated videos watermarked?</h4>
+        <p class="text-xs text-zinc-300 leading-relaxed">
+          No. All exported MP4 videos are completely unwatermarked, high-definition, and ready for you to post across Instagram Reels, TikTok, Vimeo, or anywhere else.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= BOTTOM CTA BANNER ================= -->
+  <section class="py-16 px-6 max-w-5xl mx-auto z-10 relative">
+    <div class="p-10 sm:p-16 rounded-3xl bg-gradient-to-r from-brand-950/80 via-surface-900 to-surface-900 border border-brand-500/40 text-center space-y-6 shadow-2xl relative overflow-hidden">
+      <!-- Ambient Radial Flares -->
+      <div class="absolute -right-20 -bottom-20 w-80 h-80 bg-brand-600/20 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-20 -top-20 w-80 h-80 bg-amber-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <div class="relative z-10 space-y-6">
+        <h2 class="text-3xl sm:text-5xl font-black text-white leading-tight">
+          Ready to Create Your Next Animated Story?
+        </h2>
+        <p class="text-sm sm:text-base text-zinc-300 max-w-xl mx-auto">
+          Join creators crafting cartoons, anime, sci-fi adventures, and cinematic stories without complex editing software.
+        </p>
+
+        <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+          {% if is_authenticated %}
+            <a href="/dashboard" class="btn-brand-glow inline-flex items-center gap-3 px-8 py-4 rounded-xl text-white font-extrabold text-sm tracking-wide shadow-xl">
+              <span>Enter Studio Dashboard &rarr;</span>
+            </a>
+          {% else %}
+            <a href="/signup" class="btn-brand-glow inline-flex items-center gap-3 px-8 py-4 rounded-xl text-white font-extrabold text-sm tracking-wide shadow-xl">
+              <span>Sign Up Free &bull; Get Started</span>
+              <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+              </svg>
+            </a>
+            <a href="/login" class="px-7 py-4 rounded-xl bg-surface-850 hover:bg-surface-800 text-zinc-200 border border-white/10 hover:border-white/20 font-bold text-sm transition">
+              <span>Sign In</span>
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="border-t border-white/5 bg-[#070709] py-12 px-6 relative z-10 text-xs text-zinc-400">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6">
+      <div class="flex items-center gap-3">
+        <div class="w-7 h-7 rounded-xl bg-surface-850 border border-brand-500/40 p-1 flex items-center justify-center">
+          <img src="/static/deliverace_logo.png?v=5" alt="Deliverace" class="w-full h-full object-contain">
+        </div>
+        <span class="font-bold text-white tracking-wide">DELIVER<span class="text-brand-500">ACE</span> STUDIO</span>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="/modes" class="hover:text-white transition">Creation Modes</a>
+        <a href="/how-it-works" class="hover:text-white transition">Workflow</a>
+        <a href="/captions" class="hover:text-white transition">Captions</a>
+        <a href="/voices" class="hover:text-white transition">Voices</a>
+        <a href="/faq" class="hover:text-white transition">FAQ</a>
+        <a href="/login" class="hover:text-white transition">Sign In</a>
+        <a href="/signup" class="hover:text-white transition">Sign Up</a>
+      </div>
+
+
+      <div class="text-zinc-500">
+        &copy; 2026 Deliverace Studio. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= CLIENT JAVASCRIPT ================= -->
+  <script>
+    // Format switcher (Shorts vs Widescreen)
+    function switchShowcaseFormat(format) {
+      const shortsBox = document.getElementById('shorts-preview-box');
+      const longBox = document.getElementById('long-preview-box');
+      const btnShorts = document.getElementById('toggle-shorts');
+      const btnLong = document.getElementById('toggle-long');
+      const titleBar = document.getElementById('showcase-title-bar');
+
+      if (format === 'short') {
+        shortsBox.classList.remove('hidden');
+        longBox.classList.add('hidden');
+        btnShorts.className = 'flex-1 py-2 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 format-toggle-active';
+        btnLong.className = 'flex-1 py-2 px-4 rounded-xl text-xs font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2';
+        titleBar.textContent = 'Deliverace Studio • Vertical Story Shorts (9:16)';
+      } else {
+        shortsBox.classList.add('hidden');
+        longBox.classList.remove('hidden');
+        btnLong.className = 'flex-1 py-2 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2 format-toggle-active';
+        btnShorts.className = 'flex-1 py-2 px-4 rounded-xl text-xs font-bold text-zinc-400 hover:text-white transition flex items-center justify-center gap-2';
+        titleBar.textContent = 'Deliverace Studio • Cinema Widescreen Production (16:9)';
+      }
+    }
+
+    // Audio Voice Preview
+    let currentPlayingBtn = null;
+    function playLandingVoice(voiceId, btnElement) {
+      const player = document.getElementById('landingAudioPlayer');
+      const label = btnElement.querySelector('.btn-label');
+      const icon = btnElement.querySelector('.play-icon');
+
+      if (currentPlayingBtn === btnElement && !player.paused) {
+        player.pause();
+        label.textContent = 'Listen Sample';
+        icon.textContent = '▶';
+        currentPlayingBtn = null;
+        return;
+      }
+
+      if (currentPlayingBtn && currentPlayingBtn !== btnElement) {
+        const prevLabel = currentPlayingBtn.querySelector('.btn-label');
+        const prevIcon = currentPlayingBtn.querySelector('.play-icon');
+        if (prevLabel) prevLabel.textContent = 'Listen Sample';
+        if (prevIcon) prevIcon.textContent = '▶';
+      }
+
+      label.textContent = 'Streaming...';
+      icon.textContent = '⏳';
+      player.src = `/api/voice_preview?voice=${encodeURIComponent(voiceId)}`;
+      player.play().then(() => {
+        label.textContent = 'Playing Voice';
+        icon.textContent = '⏹';
+        currentPlayingBtn = btnElement;
+      }).catch(err => {
+        console.error("Audio playback error:", err);
+        label.textContent = 'Listen Sample';
+        icon.textContent = '▶';
+      });
+
+      player.onended = () => {
+        label.textContent = 'Listen Sample';
+        icon.textContent = '▶';
+        currentPlayingBtn = null;
+      };
+    }
+
+    // Live Hero Scenario Switcher (Interactive animation & crossfade)
+    // Live Hero Scenario Switcher (Interactive animation & crossfade)
+    const HERO_SCENARIOS = {
+      fantasy: {
+        img: '/static/hero_anime.webp',
+        genreBadge: 'Story Mode',
+        genreBadgeClass: 'bg-amber-500 text-black',
+        duration: '0:30',
+        frameGlow: 'animate-glow-amber',
+        frameBorder: 'border-amber-500/40',
+        captionBorder: 'border-amber-500/40',
+        motionBadge: 'Camera Motion: Pan & Zoom Active',
+        motionBadgeClass: 'bg-amber-950/80 border-amber-800 text-amber-300',
+        words: [
+          { text: 'IN THE CITADEL', cls: 'word-karaoke-1' },
+          { text: 'OF AETHEL,', cls: 'word-karaoke-2' },
+          { text: 'THE CHOSEN SWORD', cls: 'word-karaoke-3 text-white underline decoration-amber-400 decoration-2' },
+          { text: 'AWAKENS', cls: 'word-karaoke-4' },
+          { text: 'TO PROTECT.', cls: 'word-karaoke-5' }
+        ],
+        creatorTag: '@SkywardLegends',
+        creatorEp: 'Ep. 1 • The Floating Realm',
+        featureTag: 'Multi-Image Scene Consistency',
+        featureTagClass: 'text-amber-400 bg-amber-950/60 border-amber-500/30',
+        featureTitle: 'Bring Multiple Images. Get a Seamless Animated Story.',
+        featureDesc: 'Import 3, 5, or 10 illustrations of your character. Our cinematic motion engine orchestrates fluid zoom-in, zoom-out, and lateral pan transitions for each scene, matching the narration cadence beat-for-beat.',
+        btnActiveCls: 'scenario-btn-active-amber'
+      },
+      cyberpunk: {
+        img: '/static/genre_cyberpunk.webp',
+        genreBadge: 'Sci-Fi Thriller',
+        genreBadgeClass: 'bg-cyan-500 text-black',
+        duration: '0:45',
+        frameGlow: 'animate-glow-cyan',
+        frameBorder: 'border-cyan-500/40',
+        captionBorder: 'border-cyan-500/40',
+        motionBadge: 'Cyber Camera: Fast Tilt & Shift',
+        motionBadgeClass: 'bg-cyan-950/80 border-cyan-800 text-cyan-300',
+        words: [
+          { text: 'DEEP WITHIN', cls: 'word-karaoke-1' },
+          { text: 'NEO-TOKYO,', cls: 'word-karaoke-2' },
+          { text: 'THE CYBER CIPHER', cls: 'word-karaoke-3 text-white underline decoration-cyan-400 decoration-2' },
+          { text: 'UNLOCKS', cls: 'word-karaoke-4' },
+          { text: 'THE VAULT.', cls: 'word-karaoke-5' }
+        ],
+        creatorTag: '@CyberPulseAI',
+        creatorEp: 'Ep. 4 • Silicon Shadows',
+        featureTag: 'Futuristic Sci-Fi & Cyberpunk',
+        featureTagClass: 'text-cyan-400 bg-cyan-950/60 border-cyan-500/30',
+        featureTitle: 'Cyberpunk Worlds & High-Tech Atmosphere',
+        featureDesc: 'From rain-slicked holographic skyscrapers to underground cyber markets, give your futuristic storytelling cinematic edge with pulsing synthetic tracks and glowing kinetic subtitles.',
+        btnActiveCls: 'scenario-btn-active-cyan'
+      },
+      cartoon: {
+        img: '/static/genre_cartoon.webp',
+        genreBadge: '3D Adventure',
+        genreBadgeClass: 'bg-emerald-500 text-black',
+        duration: '0:35',
+        frameGlow: 'animate-glow-emerald',
+        frameBorder: 'border-emerald-500/40',
+        captionBorder: 'border-emerald-500/40',
+        motionBadge: 'Storybook Cam: Gentle Orbit',
+        motionBadgeClass: 'bg-emerald-950/80 border-emerald-800 text-emerald-300',
+        words: [
+          { text: 'IN THE GLOWING FOREST,', cls: 'word-karaoke-1' },
+          { text: 'BARNABY FOUND', cls: 'word-karaoke-2' },
+          { text: 'THE STAR MAP', cls: 'word-karaoke-3 text-white underline decoration-emerald-400 decoration-2' },
+          { text: 'OF ANCIENT', cls: 'word-karaoke-4' },
+          { text: 'SECRETS.', cls: 'word-karaoke-5' }
+        ],
+        creatorTag: '@FableTales',
+        creatorEp: 'Ep. 2 • Whispering Woods',
+        featureTag: 'Pixar-Style 3D Fables & Lore',
+        featureTagClass: 'text-emerald-400 bg-emerald-950/60 border-emerald-500/30',
+        featureTitle: 'Whimsical 3D Animation & Bedtime Sagas',
+        featureDesc: 'Bring cute creatures and enchanting environments to life with warm, friendly narrators, whimsical sound effects, and clean, playful captions loved by all ages.',
+        btnActiveCls: 'scenario-btn-active-emerald'
+      }
+    };
+
+    // Preload alternate scenario images in browser memory for zero-latency instant switching
+    ['/static/hero_anime.webp', '/static/genre_cyberpunk.webp', '/static/genre_cartoon.webp'].forEach(src => {
+      const preloadImg = new Image();
+      preloadImg.src = src;
+    });
+
+    function selectHeroScenario(key) {
+      const data = HERO_SCENARIOS[key];
+      if (!data) return;
+
+      // Update switcher buttons
+      ['fantasy', 'cyberpunk', 'cartoon'].forEach(k => {
+        const btn = document.getElementById(`btn-scenario-${k}`);
+        if (!btn) return;
+        btn.className = 'px-3 py-1.5 rounded-xl text-xs font-bold transition border border-white/10 hover:border-white/30 text-zinc-400 hover:text-white flex items-center gap-1.5';
+      });
+      const activeBtn = document.getElementById(`btn-scenario-${key}`);
+      if (activeBtn) {
+        activeBtn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition border flex items-center gap-1.5 ${data.btnActiveCls}`;
+      }
+
+      // Smooth image crossfade
+      const img = document.getElementById('hero-phone-img');
+      if (img) {
+        img.style.opacity = '0';
+        setTimeout(() => {
+          img.src = data.img;
+          img.style.opacity = '1';
+        }, 150);
+      }
+
+      // Update Phone Frame Glow & Border
+      const frame = document.getElementById('hero-phone-frame');
+      if (frame) {
+        frame.className = `w-[280px] sm:w-[310px] aspect-[9/16] rounded-3xl overflow-hidden relative border-4 ${data.frameBorder} shadow-2xl bg-black shrink-0 group ${data.frameGlow} transition-all duration-500`;
+      }
+
+      // Update Badges
+      const genreBadge = document.getElementById('hero-genre-badge');
+      if (genreBadge) {
+        genreBadge.textContent = data.genreBadge;
+        genreBadge.className = `${data.genreBadgeClass} font-black text-[9px] px-2 py-0.5 rounded uppercase tracking-wider transition-colors`;
+      }
+
+      const durationBadge = document.getElementById('hero-duration-badge');
+      if (durationBadge) durationBadge.textContent = data.duration;
+
+      // Update Motion Badge in Top Bar
+      const motionBadge = document.getElementById('showcase-motion-badge');
+      if (motionBadge) {
+        motionBadge.textContent = data.motionBadge;
+        motionBadge.className = `px-2.5 py-1 rounded-md border text-[11px] font-mono font-bold transition-all ${data.motionBadgeClass}`;
+      }
+
+      // Update Subtitles with kinetic karaoke spans
+      const captionCard = document.getElementById('hero-caption-card');
+      if (captionCard) {
+        captionCard.className = `inline-block bg-black/85 backdrop-blur-md px-3.5 py-2.5 rounded-xl border ${data.captionBorder} shadow-lg transition-all duration-300`;
+      }
+
+      const captionText = document.getElementById('hero-caption-text');
+      if (captionText) {
+        captionText.innerHTML = data.words.map(w => `<span class="inline-block ${w.cls}">${w.text}</span>`).join(' ');
+      }
+
+      // Update Creator Tags
+      const creatorTag = document.getElementById('hero-creator-tag');
+      if (creatorTag) creatorTag.textContent = data.creatorTag;
+
+      const creatorEp = document.getElementById('hero-creator-ep');
+      if (creatorEp) creatorEp.textContent = data.creatorEp;
+
+      // Update Feature Text
+      const featureTag = document.getElementById('hero-feature-tag');
+      if (featureTag) {
+        featureTag.textContent = data.featureTag;
+        featureTag.className = `inline-block text-xs font-mono font-bold uppercase tracking-widest px-2.5 py-1 rounded border transition-colors ${data.featureTagClass}`;
+      }
+
+      const featureTitle = document.getElementById('hero-feature-title');
+      if (featureTitle) featureTitle.textContent = data.featureTitle;
+
+      const featureDesc = document.getElementById('hero-feature-desc');
+      if (featureDesc) featureDesc.textContent = data.featureDesc;
+    }
+  </script>
+
+</body>
+</html>

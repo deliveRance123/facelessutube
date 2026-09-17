@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-[#09090b]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up • Deliverace AI Story Studio</title>
+  <link rel="icon" type="image/png" href="/static/favicon.png?v=5">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            brand: { 500: '#f43f5e', 600: '#e11d48', 700: '#be123c' }
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/app.css?v=12">
+</head>
+<body class="h-full bg-[#09090b] text-slate-100 font-sans antialiased flex items-center justify-center p-4 selection:bg-rose-600 selection:text-white">
+  
+  <div class="w-full max-w-md">
+    
+    <!-- Logo Header -->
+    <div class="text-center mb-8">
+      <a href="/" class="inline-flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-brand-600/30 to-rose-950 border border-brand-500/40 p-1 flex items-center justify-center shadow-lg shadow-brand-950 group-hover:border-brand-400 transition">
+          <img src="/static/deliverace_logo.png?v=5" alt="Deliverace" class="w-full h-full object-contain">
+        </div>
+        <span class="text-xl font-black tracking-tight text-white">DELIVER<span class="text-brand-500">ACE</span></span>
+      </a>
+      <h1 class="text-xl font-bold text-white mt-4">Create Your Free Account</h1>
+      <p class="text-xs text-zinc-400 mt-1">Start generating animated stories from your images</p>
+    </div>
+
+    <!-- Sign Up Form Card -->
+    <div class="glass-card p-6 sm:p-8 border-white/10 bg-[#121217] shadow-2xl relative overflow-hidden">
+      
+      <div id="errorAlert" class="hidden mb-4 p-3 rounded-xl bg-rose-950/60 border border-rose-500/40 text-rose-300 text-xs flex items-center gap-2">
+        <span>⚠️</span>
+        <span id="errorMsg">Error message</span>
+      </div>
+
+      <form id="signupForm" onsubmit="handleSignup(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">Username</label>
+          <input type="text" id="usernameInput" required placeholder="e.g. storycreator" class="w-full bg-[#181820] border border-white/10 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-xl px-4 py-2.5 text-xs text-white placeholder-zinc-500 outline-none transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">Email Address</label>
+          <input type="email" id="emailInput" required placeholder="you@domain.com" class="w-full bg-[#181820] border border-white/10 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-xl px-4 py-2.5 text-xs text-white placeholder-zinc-500 outline-none transition">
+        </div>
+
+        <div>
+          <label class="block text-xs font-bold uppercase tracking-wider text-zinc-400 mb-1.5">Password</label>
+          <input type="password" id="passwordInput" required placeholder="At least 6 characters" minlength="6" class="w-full bg-[#181820] border border-white/10 focus:border-brand-500 focus:ring-1 focus:ring-brand-500 rounded-xl px-4 py-2.5 text-xs text-white placeholder-zinc-500 outline-none transition">
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn-brand-glow w-full py-3 rounded-xl text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-brand-950/50 mt-2">
+          <span>Create Account &bull; Launch Studio</span>
+        </button>
+      </form>
+
+      <div class="mt-6 pt-5 border-t border-white/5 text-center text-xs text-zinc-400">
+        Already have an account? 
+        <a href="/login" class="text-brand-400 hover:text-brand-300 font-bold ml-1 transition">Sign In</a>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    async function handleSignup(e) {
+      e.preventDefault();
+      const username = document.getElementById('usernameInput').value.trim();
+      const email = document.getElementById('emailInput').value.trim();
+      const password = document.getElementById('passwordInput').value;
+      const btn = document.getElementById('submitBtn');
+      const errorBox = document.getElementById('errorAlert');
+      const errorMsg = document.getElementById('errorMsg');
+
+      errorBox.classList.add('hidden');
+      btn.disabled = true;
+      btn.innerHTML = '<span>Creating Account...</span>';
+
+      const formData = new FormData();
+      formData.append('username', username);
+      formData.append('email', email);
+      formData.append('password', password);
+
+      try {
+        const res = await fetch('/api/signup', { method: 'POST', body: formData });
+        const data = await res.json();
+        if (res.ok && data.status === 'success') {
+          window.location.href = '/dashboard';
+        } else {
+          errorMsg.textContent = data.message || 'Signup failed';
+          errorBox.classList.remove('hidden');
+          btn.disabled = false;
+          btn.innerHTML = '<span>Create Account &bull; Launch Studio</span>';
+        }
+      } catch (err) {
+        errorMsg.textContent = 'Network error: ' + err;
+        errorBox.classList.remove('hidden');
+        btn.disabled = false;
+        btn.innerHTML = '<span>Create Account &bull; Launch Studio</span>';
+      }
+    }
+  </script>
+</body>
+</html>
